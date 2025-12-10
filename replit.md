@@ -1,4 +1,4 @@
-# Rios del Desierto - Sistema de Gestion de Clientes
+# Prueba Falabella - Sistema de Gestion de Clientes
 
 ## Overview
 Aplicacion completa para gestionar clientes y compras, con generacion de reportes de fidelizacion.
