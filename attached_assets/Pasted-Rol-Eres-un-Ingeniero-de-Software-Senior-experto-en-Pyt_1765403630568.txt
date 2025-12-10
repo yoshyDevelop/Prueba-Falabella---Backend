@@ -1,0 +1,83 @@
+Rol: Eres un Ingeniero de Software Senior experto en Python, FastAPI y Bases de Datos.
+
+Objetivo: Crear una aplicación completa para una prueba técnica llamada "Rios del Desierto". La aplicación debe gestionar clientes y compras, y generar reportes de fidelización.
+
+Stack Tecnológico:
+
+Lenguaje: Python 3.10+
+
+Backend: FastAPI
+
+Base de Datos: Turso (usando libsql-experimental y sqlalchemy)
+
+Análisis de Datos: Pandas (Obligatorio para el reporte)
+
+Frontend: HTML5 + JavaScript Vanilla (Bootstrap 5 CDN)
+
+Instrucciones de Arquitectura y Archivos:
+
+Por favor, genera la siguiente estructura de archivos y código:
+
+requirements.txt: Debe incluir: fastapi, uvicorn, sqlalchemy, pandas, openpyxl, libsql-experimental, python-multipart.
+
+database.py:
+
+Configura la conexión a Turso usando SQLAlchemy.
+
+Obtén las credenciales de las variables de entorno: TURSO_DATABASE_URL y TURSO_AUTH_TOKEN.
+
+La string de conexión debe tener este formato exacto para funcionar con Turso: f"sqlite+{os.environ.get('TURSO_DATABASE_URL')}/?authToken={os.environ.get('TURSO_AUTH_TOKEN')}"
+
+Configura connect_args={'check_same_thread': False}.
+
+models.py: Crea 3 modelos usando SQLAlchemy:
+
+DocumentType: id, code (ej: CC, NIT), name.
+
+Customer: id, document_number (unique), first_name, last_name, email, phone, document_type_id (FK).
+
+Purchase: id, amount (Float), created_at (DateTime), customer_id (FK).
+
+Asegúrate de configurar las relaciones (relationship) correctamente entre tablas.
+
+seed.py:
+
+Un script independiente para poblar la base de datos.
+
+Debe crear las tablas (Base.metadata.create_all).
+
+Debe insertar 3 tipos de documentos (CC, NIT, PAS).
+
+Debe insertar al menos 2 clientes.
+
+CRÍTICO: Uno de los clientes debe tener compras recientes que sumen más de 5.000.000 para probar el reporte de fidelización.
+
+main.py:
+
+Configura FastAPI y CORS.
+
+Endpoint 1: GET /api/customer/{doc_number}: Busca cliente por documento. Retorna JSON plano con datos básicos y el código del tipo de documento.
+
+Endpoint 2: GET /api/loyalty-report:
+
+Filtra compras del último mes.
+
+OBLIGATORIO: Usa pandas.read_sql para cargar los datos en un DataFrame.
+
+Usa Pandas para agrupar por cliente y sumar montos.
+
+Filtra clientes con total > 5,000,000.
+
+Genera y retorna un archivo Excel (.xlsx) usando to_excel.
+
+templates/index.html (o en la raíz):
+
+Una interfaz limpia con Bootstrap.
+
+Un formulario para buscar cliente por documento y mostrar sus datos en una tabla.
+
+Un botón que llame a la API para exportar los datos del cliente en pantalla a CSV (vía JS).
+
+Un botón destacado para descargar el "Reporte de Fidelización (Excel)".
+
+Nota Importante: Asume que las credenciales de Turso ya están en los Secrets del entorno. No uses SQLite local estándar, usa el driver libsql.
