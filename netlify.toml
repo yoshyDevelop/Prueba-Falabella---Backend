@@ -1,0 +1,5 @@
+[build]
+  command = "bash ./netlify-build.sh"
+  publish = "."
+
+# adjust publish to your actual publish dir
